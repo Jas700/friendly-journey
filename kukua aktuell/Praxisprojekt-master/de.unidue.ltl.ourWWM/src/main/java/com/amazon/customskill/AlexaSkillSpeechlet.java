@@ -58,9 +58,9 @@ implements SpeechletV2
 	private static String correctAnswer = "";
 	private static String correctAnswer2 = "";
 	private static String correctAnswer3 = "";
-	private static enum RecognitionState {Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, YesNo, YesNoTwo, YesNoLevel, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree};
+	private static enum RecognitionState {Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, YesNo, YesNoTwo, YesNoLevel, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree, Weiterquizzen, SingleQuiz};
 	private RecognitionState recState;
-	private static enum UserIntent {menü, bye, playerone, one, two, playertwo, vokabeln, quiz, einer, mehrere, weiter, ja, aufhören, nein, hello, tree, light, now, maybe, today, einfach, mittel, schwer, moin, nextlevel, Error};
+	private static enum UserIntent {menü, bye, playerone, one, two, playertwo, vokabeln, quiz, einer, mehrere, weiter, ja, aufhören, beenden, nein, hello, tree, light, now, maybe, today, einfach, mittel, schwer, moin, nextlevel, Error, Quiz};
 	UserIntent ourUserIntent;
 
 	static String welcomeMsg = "Hallo und herzlich willkommen bei Quizzitch. Möchten einer oder mehrere Spieler spielen?";
@@ -70,13 +70,13 @@ implements SpeechletV2
 	static String singleQuizMsg = "Sie sind im Einzelquiz. Los geehts!";
 	static String wrongMsg = "Das ist leider falsch.";
 	static String correctMsg = "Das ist richtig.";
-	static String continueMsg = "Möchten Sie weiterspielen?";
+	static String continueMsg = "Möchten Sie weiter machen?";
 	static String congratsMsg = "Herzlichen Glückwunsch! Sie haben eine Million Punkte gewonnen.";
 	static String goodbyeMsg = "Auf Wiedersehen!";
 	static String sumMsg = "Sie haben {replacement} Punkte.";
 	static String sumTwoMsg = "Spieler eins hat {replacement3} Punkte.";
 	static String sumThreeMsg = "Spieler zwei hat {replacement5} Punkte.";
-	static String errorYesNoMsg = "Das habe ich nicht verstanden. Sagen Sie bitte weiter oder oder aufhören.";
+	static String errorYesNoMsg = "Das habe ich nicht verstanden. Sagen Sie bitte weiter oder aufhören.";
 	static String errorAnswerMsg = "Das habe ich nicht verstanden. Sagen Sie bitte erneut Ihre Antwort.";
 	static String errorOneTwoMsg = "Das habe ich nicht verstanden. Sagen Sie bitte einer oder zwei.";
 	static String errorVokabelQuizMsg = "Das habe ich nicht verstanden. Sagen Sie bitte Vokabeln oder Quiz.";
@@ -90,6 +90,9 @@ implements SpeechletV2
 	static String continueLevelMsg = "Weiter gehts in Level zwei. Möchten Sie weiterspielen?";
 	static String playerOneWins = "Spieler eins gewinnt die Runde.";
 	static String playerTwoWins = "Spieler zwei gewinnt die Runde.";
+	static String weiterquizzenMsg = "Möchten Sie nun etwas Quiz spielen oder beenden?";
+	static String errorWeiterquizzen = "Das habe ich nicht verstanden. Sagen Sie bitte Quiz oder beenden.";
+	
 
 
 
@@ -213,13 +216,15 @@ implements SpeechletV2
 		case AnswerFive: resp = evaluateAnswerFive(userRequest); break;
 		case YesNoTwo: resp = evaluateYesNoTwo(userRequest); break;
 		case YesNoLevel: resp = evaluateYesNoLevel(userRequest); break;
+		case Weiterquizzen: resp = evaluateWeiterquizzen(userRequest); break;
+		case SingleQuiz: resp = evaluateSingleQuiz(userRequest); break;
 		/*recState = RecognitionState.Answer; break;*/
 		default: resp = response("Erkannter Text: " + userRequest);
 		}   
 		return resp;
 	}
 
-	private SpeechletResponse evaluateYesNo(String userRequest) {
+	private SpeechletResponse evaluateYesNo(String userRequest) {	
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
@@ -232,11 +237,11 @@ implements SpeechletV2
 			res = askUserResponse(question);
 			recState = RecognitionState.Answer; break;
 		} case aufhören: {
-			/*recState = RecognitionState.Answer;*/
-			res = response(/*buildString(sumMsg, String.valueOf(sum), "")+" "+*/goodbyeMsg); break;
+			res = askUserResponse(weiterquizzenMsg);
+			recState = RecognitionState.Weiterquizzen; break;
 		} case nein: {
-			/*recState = RecognitionState.Answer;*/
-			res = response(/*buildString(sumMsg, String.valueOf(sum), "")+" "+*/goodbyeMsg); break;
+			res = askUserResponse(weiterquizzenMsg);
+			recState = RecognitionState.Weiterquizzen; break;
 		} case menü: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -246,6 +251,29 @@ implements SpeechletV2
 		}
 		return res;
 	}
+	
+	
+	
+	private SpeechletResponse evaluateWeiterquizzen(String userRequest) {
+		SpeechletResponse res = null;
+		recognizeUserIntent(userRequest);
+		switch (ourUserIntent) {
+		case quiz: {
+			selectQuestion();
+			res = askUserResponse(singleQuizMsg+" "+question);
+			recState = RecognitionState.Answer; break;
+		} case beenden: {
+			/*recState = RecognitionState.WhichPlayer;*/
+			res = response(/*buildString(sumMsg, String.valueOf(sum), "")+" "+*/goodbyeMsg); break;
+		} default: {
+			res = askUserResponse(errorWeiterquizzen);
+		}
+		}
+		return res;
+	}
+	
+	
+	
 	
 	private SpeechletResponse evaluateYesNoTwo(String userRequest) {
 		SpeechletResponse res = null;
@@ -315,9 +343,8 @@ implements SpeechletV2
 			res = askUserResponse(difficultyMsg);
 			recState = RecognitionState.Vokabel; break;
 		} case quiz: {
-			selectQuestion();
-			res = askUserResponse(singleQuizMsg+" "+question);
-			recState = RecognitionState.Answer; break;
+			res = askUserResponse(singleQuizMsg);
+			recState = RecognitionState.SingleQuiz; break;
 		} case menü: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -353,6 +380,25 @@ implements SpeechletV2
 		}
 		return res;
 	}
+	
+	
+	private SpeechletResponse evaluateSingleQuiz(String userRequest) {
+		SpeechletResponse res = null;
+		recognizeUserIntent(userRequest);
+		switch (ourUserIntent) {
+		case quiz: {
+			selectQuestion();
+			res = askUserResponse(question);
+			recState = RecognitionState.Answer; break;
+		} default: {
+			res = askUserResponse(errorVokabelMsg);
+		}
+		}
+		return res;
+	}
+	
+	
+	
 	
 	private SpeechletResponse evaluateWhichPlayer(String userRequest) {
 		SpeechletResponse res = null;
@@ -794,6 +840,9 @@ implements SpeechletV2
 		String pattern26 = "\\btwo\\b";
 		String pattern27 = "\\bja\\b";
 		String pattern28 = "\\bnein\\b";
+		String pattern29 = "\\bquiz\\b";
+		String pattern30 = "\\bbeenden\\b";
+		
 		
 
 		Pattern p4 = Pattern.compile(pattern4);
@@ -846,6 +895,10 @@ implements SpeechletV2
 		Matcher m27= p27.matcher(userRequest);
 		Pattern p28 = Pattern.compile(pattern28);
 		Matcher m28= p28.matcher(userRequest);
+		Pattern p29 = Pattern.compile(pattern29);
+		Matcher m29= p29.matcher(userRequest);
+		Pattern p30 = Pattern.compile(pattern30);
+		Matcher m30= p30.matcher(userRequest);
 		
 		if (m4.find()) {
 			ourUserIntent = UserIntent.now;
@@ -897,6 +950,10 @@ implements SpeechletV2
 			ourUserIntent = UserIntent.ja;
 		} else if (m28.find()) {
 			ourUserIntent = UserIntent.nein;
+		} else if (m29.find()) {
+			ourUserIntent = UserIntent.quiz;
+		} else if (m30.find()) {
+			ourUserIntent = UserIntent.beenden;
 		} else {
 			ourUserIntent = UserIntent.Error;
 		}

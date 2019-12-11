@@ -58,7 +58,7 @@ implements SpeechletV2
 	private static String correctAnswer = "";
 	private static String correctAnswer2 = "";
 	private static String correctAnswer3 = "";
-	private static enum RecognitionState {Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, YesNo, YesNoTwo, YesNoLevel, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree, Weiterquizzen, SingleQuiz};
+	private static enum RecognitionState {Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, YesNo, YesNoTwo, YesNoLevel, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree, Weiterquizzen, SingleQuiz, YesNoQuiz, YesNoVokabeln, AnswerVokabeln, AnswerQuiz};
 	private RecognitionState recState;
 	private static enum UserIntent {menü, bye, playerone, one, two, playertwo, vokabeln, quiz, einer, mehrere, weiter, ja, aufhören, beenden, nein, hello, tree, light, now, maybe, today, einfach, mittel, schwer, moin, nextlevel, Error, Quiz};
 	UserIntent ourUserIntent;
@@ -67,7 +67,7 @@ implements SpeechletV2
 	static String singleMsg = "Sie sind im Einzelspielermodus. Möchten Sie Vokabeln lernen oder quizzen?";
 	static String multiMsg = "Sie sind im Mehrspielermodus. Einigen Sie sich nun, wer Spieler 1 und wer Spieler 2 ist. Wenn Sie die Antwort auf die Frage kennen, rufen Sie Ihre Spielernummer. Ist die Antwort korrekt, erhalten Sie Punkte. Los geeeehts!";
 	static String difficultyMsg = "Schwierigkeit einfach, mittel oder schwer?";
-	static String singleQuizMsg = "Sie sind im Einzelquiz. Los geehts!";
+	static String singleQuizMsg = "Sie sind im Einzelquiz. Sind sie bereit?";
 	static String wrongMsg = "Das ist leider falsch.";
 	static String correctMsg = "Das ist richtig.";
 	static String continueMsg = "Möchten Sie weiter machen?";
@@ -92,7 +92,7 @@ implements SpeechletV2
 	static String playerTwoWins = "Spieler zwei gewinnt die Runde.";
 	static String weiterquizzenMsg = "Möchten Sie nun etwas Quiz spielen oder beenden?";
 	static String errorWeiterquizzen = "Das habe ich nicht verstanden. Sagen Sie bitte Quiz oder beenden.";
-	
+	static String weiterVokabelnMsg = "Möchten Sie nun etwas Vokabeln lernen oder beenden?";
 
 
 
@@ -203,10 +203,10 @@ implements SpeechletV2
 		logger.info("recState is [" + recState + "]");
 		SpeechletResponse resp = null;
 		switch (recState) {
-		case Answer: resp = evaluateAnswer(userRequest); break;
+		/* case Answer: resp = evaluateAnswer(userRequest); break; */
 		case OneTwo: resp = evaluateOneTwo(userRequest); break;
 		case VokabelQuiz: resp = evaluateVokabelQuiz(userRequest); break;
-		case YesNo: resp = evaluateYesNo(userRequest); break;
+		/* case YesNo: resp = evaluateYesNo(userRequest); break; */
 		case WhichPlayer: resp = evaluateWhichPlayer(userRequest); break;
 		case WhichPlayerThree: resp = evaluateWhichPlayerThree(userRequest); break;
 		case Vokabel: resp = evaluateVokabel(userRequest); break;
@@ -218,30 +218,37 @@ implements SpeechletV2
 		case YesNoLevel: resp = evaluateYesNoLevel(userRequest); break;
 		case Weiterquizzen: resp = evaluateWeiterquizzen(userRequest); break;
 		case SingleQuiz: resp = evaluateSingleQuiz(userRequest); break;
+		case YesNoQuiz: resp = evaluateYesNoQuiz(userRequest); break;
+		case YesNoVokabeln: resp = evaluateYesNoVokabeln(userRequest); break;
+		case AnswerVokabeln: resp = evaluateAnswerVokabeln(userRequest); break;
+		case AnswerQuiz: resp = evaluateAnswerQuiz(userRequest); break;
 		/*recState = RecognitionState.Answer; break;*/
 		default: resp = response("Erkannter Text: " + userRequest);
 		}   
 		return resp;
 	}
 
-	private SpeechletResponse evaluateYesNo(String userRequest) {	
+	/* Im Vokabelteil: Möchten Sie weitermachen? -> stattdessen Quizzen? */
+	private SpeechletResponse evaluateYesNoVokabeln(String userRequest) {	
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case weiter: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
+			recState = RecognitionState.AnswerVokabeln; break;
 		} case ja: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
+			recState = RecognitionState.AnswerVokabeln; break;
+			
 		} case aufhören: {
 			res = askUserResponse(weiterquizzenMsg);
 			recState = RecognitionState.Weiterquizzen; break;
 		} case nein: {
 			res = askUserResponse(weiterquizzenMsg);
 			recState = RecognitionState.Weiterquizzen; break;
+			
 		} case menü: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -253,15 +260,46 @@ implements SpeechletV2
 	}
 	
 	
+	/* Im Quizteil: Möchten Sie weitermachen? -> stattdessen Vokabeln? */
+	
+	private SpeechletResponse evaluateYesNoQuiz(String userRequest) {	
+		SpeechletResponse res = null;
+		recognizeUserIntent(userRequest);
+		switch (ourUserIntent) {
+		case weiter: {
+			selectQuestion();
+			res = askUserResponse(question);
+			recState = RecognitionState.AnswerQuiz; break;
+		} case ja: {
+			selectQuestion();
+			res = askUserResponse(question);
+			recState = RecognitionState.AnswerQuiz; break;
+			
+		} case aufhören: {
+			res = askUserResponse(weiterVokabelnMsg);
+			recState = RecognitionState.Vokabel; break;
+		} case nein: {
+			res = askUserResponse(weiterVokabelnMsg);
+			recState = RecognitionState.Vokabel; break;
+			
+		} case menü: {
+			res = askUserResponse(welcomeMsg);
+			recState = RecognitionState.OneTwo; break;
+		} default: {
+			res = askUserResponse(errorYesNoMsg);
+		}
+		}
+		return res;
+	}
+	
 	
 	private SpeechletResponse evaluateWeiterquizzen(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case quiz: {
-			selectQuestion();
-			res = askUserResponse(singleQuizMsg+" "+question);
-			recState = RecognitionState.Answer; break;
+			res = askUserResponse(singleQuizMsg);
+			recState = RecognitionState.SingleQuiz; break;
 		} case beenden: {
 			/*recState = RecognitionState.WhichPlayer;*/
 			res = response(/*buildString(sumMsg, String.valueOf(sum), "")+" "+*/goodbyeMsg); break;
@@ -362,15 +400,15 @@ implements SpeechletV2
 		case einfach: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
+			recState = RecognitionState.AnswerVokabeln; break;
 		} case mittel: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
+			recState = RecognitionState.AnswerVokabeln; break;
 		} case schwer: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
+			recState = RecognitionState.AnswerVokabeln; break;
 		} case menü: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -381,16 +419,24 @@ implements SpeechletV2
 		return res;
 	}
 	
-	
+	/* sind sie bereit? */
 	private SpeechletResponse evaluateSingleQuiz(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
-		case quiz: {
+		
+		
+		case ja: {
 			selectQuestion();
 			res = askUserResponse(question);
-			recState = RecognitionState.Answer; break;
-		} default: {
+			recState = RecognitionState.AnswerQuiz; break;
+		} 
+		
+		case nein: {
+			res = response(/*buildString(sumMsg, String.valueOf(sum), "")+" "+*/goodbyeMsg); break;
+		}
+		
+		default: {
 			res = askUserResponse(errorVokabelMsg);
 		}
 		}
@@ -440,7 +486,9 @@ implements SpeechletV2
 		return res;
 	}
 
-	private SpeechletResponse evaluateAnswer(String userRequest) {
+	
+	/*in den Vokabeln*/
+	private SpeechletResponse evaluateAnswerVokabeln(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		/*switch (ourUserIntent) {*/
@@ -459,13 +507,52 @@ implements SpeechletV2
 					if (sum == 1000000) {
 						res = response(correctMsg+" "+congratsMsg+" "+goodbyeMsg);
 					} else {
-						recState = RecognitionState.YesNo;
+						recState = RecognitionState.YesNoVokabeln;
 						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+continueMsg);
 						/*recState = RecognitionState.YesNo;*/
 					}
 				} else {
 					increaseQuestions();
-					recState = RecognitionState.YesNo;
+					recState = RecognitionState.YesNoVokabeln;
+					res = askUserResponse(wrongMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+continueMsg);
+				}
+			} /*else {
+				res = askUserResponse(errorAnswerMsg);
+			}
+		/*}
+		}*/
+		return res;
+	}
+	
+	
+	
+	/*im Quiz*/
+	private SpeechletResponse evaluateAnswerQuiz(String userRequest) {
+		SpeechletResponse res = null;
+		recognizeUserIntent(userRequest);
+		/*switch (ourUserIntent) {*/
+		/*default :{*/
+			/*if (ourUserIntent.equals(UserIntent.hello)
+					|| ourUserIntent.equals(UserIntent.tree)
+					|| ourUserIntent.equals(UserIntent.now)
+					|| ourUserIntent.equals(UserIntent.maybe)
+					|| ourUserIntent.equals(UserIntent.today)
+					)*/ {
+				logger.info("User answer ="+ ourUserIntent.name().toLowerCase()+ "/correct answer="+correctAnswer);
+				if (ourUserIntent.name().toLowerCase().equals(correctAnswer)) {
+					logger.info("User answer recognized as correct.");
+					increaseSum();
+					increaseQuestions();
+					if (sum == 1000000) {
+						res = response(correctMsg+" "+congratsMsg+" "+goodbyeMsg);
+					} else {
+						recState = RecognitionState.YesNoQuiz;
+						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+continueMsg);
+						/*recState = RecognitionState.YesNo;*/
+					}
+				} else {
+					increaseQuestions();
+					recState = RecognitionState.YesNoQuiz;
 					res = askUserResponse(wrongMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+continueMsg);
 				}
 			} /*else {

@@ -67,7 +67,7 @@ implements SpeechletV2
 	static String singleMsg = "Sie sind im Einzelspielermodus. Möchten Sie Vokabeln lernen oder quizzen?";
 	static String multiMsg = "Sie sind im Mehrspielermodus. Einigen Sie sich nun, wer Spieler 1 und wer Spieler 2 ist. Wenn Sie die Antwort auf die Frage kennen, rufen Sie Ihre Spielernummer. Ist die Antwort korrekt, erhalten Sie Punkte. Los geeeehts!";
 	static String difficultyMsg = "Schwierigkeit einfach, mittel oder schwer?";
-	static String singleQuizMsg = "Sie sind im Einzelquiz. Sind sie bereit?";
+	static String singleQuizMsg = "Sie sind im Einzelquiz. Sind sie bereit zu quizzen?";
 	static String wrongMsg = "Das ist leider falsch.";
 	static String correctMsg = "Das ist richtig.";
 	static String continueMsg = "Möchten Sie weiter machen?";
@@ -80,7 +80,7 @@ implements SpeechletV2
 	static String errorAnswerMsg = "Das habe ich nicht verstanden. Sagen Sie bitte erneut Ihre Antwort.";
 	static String errorOneTwoMsg = "Das habe ich nicht verstanden. Sagen Sie bitte einer oder zwei.";
 	static String errorVokabelQuizMsg = "Das habe ich nicht verstanden. Sagen Sie bitte Vokabeln oder Quiz.";
-	static String errorVokabelMsg = "Das habe ich nicht verstanden. Sagen Sie bitte einfach, mittel oder schwer.";
+	static String errorVokabelMsg = "In welcher Schwierigkeitsstufe möchten Sie Vokabeln üben? Sagen Sie bitte einfach, mittel oder schwer.";
 	static String VokabelLeicht = "Sie sind im leichten Vokabeltrainermodus";
 	static String VokabelMittel = "Sie sind im mittleren Vokabeltrainermodus";
 	static String VokabelSchwer = "Sie sind im schweren Vokabeltrainermodus";
@@ -285,6 +285,7 @@ implements SpeechletV2
 		} case menü: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
+			
 		} default: {
 			res = askUserResponse(errorYesNoMsg);
 		}

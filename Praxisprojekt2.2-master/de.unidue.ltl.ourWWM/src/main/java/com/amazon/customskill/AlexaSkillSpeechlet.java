@@ -986,7 +986,7 @@ implements SpeechletV2
 	}
 
 	
-	/*im Quiz*/
+	/*im Quiz Level 1*/
 	private SpeechletResponse evaluateAnswerQuizLevelOne(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);{
@@ -1001,14 +1001,14 @@ implements SpeechletV2
 					} else {
 						selectQuestion2();
 						recState = RecognitionState.AnswerQuizLevelOne;
-						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+question2/*+" "+resume1Msg*/);
+						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+"Next question:"+" "+question2/*+" "+resume1Msg*/);
 						/*recState = RecognitionState.YesNo;*/
 					}
 				} else {
 					/*increaseQuestions2();*/
 					selectQuestion2();
 					recState = RecognitionState.AnswerQuizLevelOne;
-					res = askUserResponse(wrongMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+question2/*+" "+resume1Msg*/);
+					res = askUserResponse(wrongMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+"Next question:"+" "+question2/*+" "+resume1Msg*/);
 					/*recState = RecognitionState.YesNo;*/
 				}
 			} /*else {
@@ -1019,7 +1019,7 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*im Quiz*/
+	/*im Quiz Level 2*/
 	private SpeechletResponse evaluateAnswerQuizLevelTwo(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);{
@@ -1028,7 +1028,7 @@ implements SpeechletV2
 					logger.info("User answer recognized as correct.");
 					increaseSum();
 					/*increaseQuestions3();*/
-					if (sum >= 100) {
+					if (sum >= 50) {
 						recState = RecognitionState.YesNoQuizLevelThree;
 						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+resumeEinzelQuizLevelThreeMsg);
 					} else {
@@ -1053,7 +1053,7 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*im Quiz*/
+	/*im Quiz Level 3*/
 	private SpeechletResponse evaluateAnswerQuizLevelThree(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);{
@@ -1062,7 +1062,7 @@ implements SpeechletV2
 					logger.info("User answer recognized as correct.");
 					increaseSum();
 					/*increaseQuestions4();*/
-					if (sum >= 150) {
+					if (sum >= 50) {
 						recState = RecognitionState.YesNoQuizLevelEnd;
 						res = askUserResponse(correctMsg+" "+buildString(sumMsg, String.valueOf(sum), " ")+" "+resumeEinzelQuizEndMsg);
 					} else {

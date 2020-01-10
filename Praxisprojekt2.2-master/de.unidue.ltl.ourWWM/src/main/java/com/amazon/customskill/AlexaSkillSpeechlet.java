@@ -72,7 +72,7 @@ implements SpeechletV2
 	private static String correctAnswer2 = "";
 	private static String correctAnswer3 = "";
 	private static String correctAnswer4 = "";
-	private static enum RecognitionState {YesNoQuizLevelEnd, YesNoQuizLevelOne, YesNoQuizLevelTwo, YesNoQuizLevelThree, YesNoVokabelnEasy, YesNoVokabelnMedium, YesNoVokabelnHard, AnswerQuizLevelOne, AnswerQuizLevelTwo, AnswerQuizLevelThree, AnswerVokabelnEasy, AnswerVokabelnMedium, AnswerVokabelnHard, Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, AnswerSix, AnswerSeven, YesNo, YesNoTwo, YesNoLevel, YesNoLevelTwo, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree, WhichPlayerFour, AgainOrMenu, Weiterquizzen, SingleQuiz, YesNoQuiz, YesNoVokabeln, AnswerVokabeln, AnswerQuiz};
+	private static enum RecognitionState {YesNoQuizLevelEnd, YesNoQuizLevelOne, YesNoQuizLevelTwo, YesNoQuizLevelThree, YesNoVokabelnEasy, YesNoVokabelnMedium, YesNoVokabelnHard, AnswerQuizLevelOne, AnswerQuizLevelTwo, AnswerQuizLevelThree, AnswerVokabelnEasy, AnswerVokabelnMedium, AnswerVokabelnHard, Answer, AnswerTwo, AnswerThree, AnswerFour, AnswerFive, AnswerSix, AnswerSeven, YesNo, YesNoTwo, YesNoLevel, YesNoLevelTwo, OneTwo, VokabelQuiz, Vokabel, WhichPlayer, WhichPlayerThree, WhichPlayerFour, AgainOrMenu, Weiterquizzen, SingleQuiz, YesNoQuiz, YesNoVokabeln, AnswerVokabeln, AnswerQuiz, Menu};
 	private RecognitionState recState;
 	private static enum UserIntent {hand, hey, levelone, leveltwo, difficulty, bone, onne, twwo, yess, again, banana, menu, bye, playerone, playertwo, vocabulary, resume, quiz, yes, no, leave, quit, hello, tree, light, now, maybe, today, easy, medium, hard, moin, nextlevel, Error, Quiz, food, head, hair, leg, sun, always, water, table, city, stairs, haircolour, wheel, bellybutton, broken, contract, community, candle, field, gale, giveup, microwave, pillow, policy, balance, acquaintance, bossy, confident, generous, 
 		mother, inlaw, moody, reliable, accountancy, apply, fluently, insist, representative, 
@@ -80,9 +80,19 @@ implements SpeechletV2
 		
 	UserIntent ourUserIntent;
 
+	
+	
+	
+	
+	
+	/* static String welcomeMsg = "<speak><amazon:emotion name=\"excited\"intensity=\"medium\">.Five seconds till lift off!</amazon:emotion></speak>"; */
+	
+	/* static String welcomeMsg = "<speak><amazon:effect name=\"whispered\">\"das ist ein test!\"</amazon:effect></speak>"; */
+	
 	static String welcomeMsg = "Hello and welcome at Quizzitch. How many players want to play? One or two players?";
 	static String singleMsg = "You're in single mode. Do you want to train vocabulary first or starting a quiz?";
-	static String multiMsg = "You're in two player mode. Please clarify who wants to be player one and who wants to be player two. If you think you know the correct answer, say you're player number. You will get points if your answer is correct. Let's begin!";	static String difficultyMsg = "Please choose between the difficulty levels easy, medium and hard.";
+	static String multiMsg = "You're in two player mode. Please clarify who wants to be player one and who wants to be player two. If you think you know the correct answer, say you're player number. You will get points if your answer is correct. Let's begin!";
+	static String difficultyMsg = "Please choose between the difficulty levels easy, medium and hard.";
 	static String singleQuizMsg = "Welcome to the single quiz. Let's start with the first question.";
 	static String wrongMsg = "That's wrong.";
 	static String correctMsg = "Well done, that's correct!";
@@ -92,22 +102,22 @@ implements SpeechletV2
 	static String sumMsg = "You've {replacement} points.";
 	static String sumTwoMsg = "The score is {replacement3}";
 	static String sumThreeMsg = "to {replacement5}.";
-	static String errorYesNoMsg = "Sorry I did not unterstand that. Say please resume or quit.";
+	static String errorYesNoMsg = "Sorry I did not unterstand that. Say resume or quit.";
 	static String errorAgainOrMenuMsg = "Sorry I did not unterstand that. Please say again, menu or quit.";
 	static String errorAnswerMsg = "Sorry I did not unterstand that. Please mention your answer again.";
-	static String errorOneTwoMsg = "Unfortunately I did not unterstand that. Please say one or two.";
+	static String errorOneTwoMsg = "Please choose between one or two";
 	static String errorVokabelQuizMsg = "Unfortunately I did not understand that. Say vocabulary or quiz.";
 	static String errorVokabelMsg = "In which difficulty level do you want to train your vocabulary? You can choose between easy, medium and hard.";
 	static String VokabelLeicht = "Welcome to the easy vocab trainer";
 	static String VokabelMittel = "Welcome to the medium vocab trainer";
 	static String VokabelSchwer = "Welcome to the hard vocab trainer";
-	static String errorSpielereinszweiMsg = "Which player knows the correct answer?";
+	static String errorSpielereinszweiMsg = "Please say your player number first.";
 	static String SpielerEinsMsg = "Player one was faster. What's your answer?";
 	static String SpielerEinsKurzMsg = "Player one?";
 	static String SpielerZweiMsg = "Player two was faster. What's your answer?";
 	static String SpielerZweiKurzMsg = "Player two?";
-	static String resumeLevelMsg = "Level two is up. Do you want to contiunue?";
-	static String resumeLevelTwoMsg = "Level three is up. Do you want to contiunue?";
+	static String resumeLevelMsg = "Level two is up. Do you want to continue?";
+	static String resumeLevelTwoMsg = "Level three is up. Do you want to continue?";
 	static String resumeEinzelQuizLevelTwoMsg = "You can resume with level two. Do you want to jump to the second level?";
 	static String resumeEinzelQuizLevelThreeMsg = "You can resume with level three. Do you want to jump to the third level?";
 	static String resumeEinzelQuizEndMsg = "Congrats, you made it! You passed all levels! Do you want to resume, change level or back to the menu?";
@@ -161,14 +171,18 @@ implements SpeechletV2
 	{
 
 		return askUserResponse(welcomeMsg);
+		// return responseWithFlavour(welcomeMsg, 5);
+		
+	
 		
 	}
 	
 	private void selectQuestion() {
-	Random r = new Random();
-	int questions = r.nextInt(15);
+		Random r = new Random();
+		int questions = r.nextInt(15);
 		switch(questions){
-		case 1: question = "Hallo bedeutet auf englisch hello. Sage hallo auf englisch."; correctAnswer = "hello"; correctAnswer = "hey"; break;
+		
+		case 1: question = "Hallo bedeutet auf englisch hello. Say hallo in english."; correctAnswer = "hello"; correctAnswer = "hey"; break;
 		case 2: question = "What does the german word baum in english mean?"; correctAnswer = "tree"; break;
 		case 3: question = "jetzt bedeutet auf englisch now. Sage jetzt auf englisch."; correctAnswer = "now"; break;
 		case 4: question = "vielleicht bedeutet auf englisch maybe. Sage vielleicht auf englisch."; correctAnswer = "maybe"; break;
@@ -335,11 +349,33 @@ implements SpeechletV2
 		case AnswerQuizLevelOne: resp = evaluateAnswerQuizLevelOne(userRequest); break;
 		case AnswerQuizLevelTwo: resp = evaluateAnswerQuizLevelTwo(userRequest); break;
 		case AnswerQuizLevelThree: resp = evaluateAnswerQuizLevelThree(userRequest); break;
+		case Menu: resp = evaluateMenu(userRequest); break;
 		default: resp = response("Erkannter Text: " + userRequest);
 		}   
 		return resp;
 	}
+	
+	
+	
+	/* +++ mein Versuch ein menü state zu erstellen (ist nicht eingebunden) MENU +++ */
+	
+	private SpeechletResponse evaluateMenu(String userRequest) {
 
+		SsmlOutputSpeech speech = new SsmlOutputSpeech();
+		switch(ourUserIntent){ 
+		
+		default: 
+			speech.setSsml("<speak><amazon:effect name=\"whispered\">welcome at quizzitch</amazon:effect></speak>");
+			recState = RecognitionState.OneTwo; break; 
+		}
+		return evaluateYesNo(null);
+	}
+	
+	
+	
+
+	
+	
 	/* Im Vokabelteil: Möchten Sie weitermachen? -> stattdessen Quizzen? */
 	private SpeechletResponse evaluateYesNoVokabelnEasy(String userRequest) {	
 		SpeechletResponse res = null;
@@ -355,13 +391,15 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
+			// res = responseWithFlavour(welcomeMsg, 5);
 			recState = RecognitionState.OneTwo; break;
+			
 		} case difficulty: {
 			res = askUserResponse(difficultyMsg);
 			recState = RecognitionState.Vokabel; break;
@@ -387,10 +425,10 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerVokabelnMedium; break; 
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
@@ -419,12 +457,13 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerVokabelnHard; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
+			// speech.setSsml("<speak><amazon:effect name=\"whispered\">test das ist</amazon:effect></speak>");
 			recState = RecognitionState.OneTwo; break;
 		} case difficulty: {
 			res = askUserResponse(difficultyMsg);
@@ -451,9 +490,9 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerQuizLevelOne; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -479,9 +518,9 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerQuizLevelTwo; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
@@ -508,9 +547,9 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerQuizLevelThree; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 			
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
@@ -537,9 +576,9 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerQuizLevelThree; break;
 			
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case levelone: {
 			res = askUserResponse(question2);
 			recState = RecognitionState.AnswerQuizLevelOne; break;
@@ -569,7 +608,7 @@ implements SpeechletV2
 			res = askUserResponse(question);
 			recState = RecognitionState.Answer; break;
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -590,7 +629,7 @@ implements SpeechletV2
 			res = askUserResponse(question2);
 			recState = RecognitionState.WhichPlayer; break;
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -611,7 +650,7 @@ implements SpeechletV2
 			res = askUserResponse(question3);
 			recState = RecognitionState.WhichPlayerThree; break;
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -632,7 +671,7 @@ implements SpeechletV2
 			res = askUserResponse(question4);
 			recState = RecognitionState.WhichPlayerFour; break;
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
@@ -663,7 +702,7 @@ implements SpeechletV2
 			res = askUserResponse(question);
 			recState = RecognitionState.WhichPlayer; break;
 		} case quit: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		} case menu: {
 			res = askUserResponse(welcomeMsg);
 			sum = 0;
@@ -685,16 +724,18 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*Ein oder zwei Spieler?*/
+	/* Ein oder zwei Spieler? */
+
 	private SpeechletResponse evaluateOneTwo(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
+		
 		case onne: {
 			res = askUserResponse(singleMsg);
 			recState = RecognitionState.VokabelQuiz; break;
 			
-		} case menu: {
+		}  case menu: {
 			res = askUserResponse(welcomeMsg);
 			recState = RecognitionState.OneTwo; break;
 		} case twwo: {
@@ -705,8 +746,11 @@ implements SpeechletV2
 			res = askUserResponse(errorOneTwoMsg);
 		}
 		}
+		
 		return res;
 	}
+	
+	
 	
 	/*Vokabeln oder Quiz?*/
 	private SpeechletResponse evaluateVokabelQuiz(String userRequest) {
@@ -774,7 +818,7 @@ implements SpeechletV2
 		} 
 		
 		case no: {
-			res = response(goodbyeMsg); break;
+			res = responseWithFlavour(goodbyeMsg, 6); break;
 		}
 		
 		default: {
@@ -791,20 +835,25 @@ implements SpeechletV2
 		switch (ourUserIntent) {
 		case playerone: {
 			res = askUserResponse(SpielerEinsKurzMsg);
-			recState = RecognitionState.AnswerTwo; break;
-		} case onne: {
+			recState = RecognitionState.AnswerTwo;
+		}; break;
+		case onne: {
 			res = askUserResponse(SpielerEinsKurzMsg);
-			recState = RecognitionState.AnswerTwo; break;
-		} case playertwo: {
+			recState = RecognitionState.AnswerTwo;
+		}; break;
+		case playertwo: {
 			res = askUserResponse(SpielerZweiKurzMsg);
-			recState = RecognitionState.AnswerThree; break;
-		} case twwo: {
+			recState = RecognitionState.AnswerThree;
+		}; break;
+		 case twwo: {
 			res = askUserResponse(SpielerZweiKurzMsg);
-			recState = RecognitionState.AnswerThree; break;
-		} case menu: {
+			recState = RecognitionState.AnswerThree;
+		}; break;
+		case menu: {
 			res = askUserResponse(welcomeMsg);
-			recState = RecognitionState.OneTwo; break;
-		} default: {
+			recState = RecognitionState.OneTwo;
+		}; break;
+		default: {
 			res = askUserResponse(errorSpielereinszweiMsg);
 		}
 		}
@@ -860,8 +909,8 @@ implements SpeechletV2
 				logger.info("User answer ="+ ourUserIntent.name().toLowerCase()+ "/correct answer="+correctAnswer);
 				if (ourUserIntent.name().toLowerCase().equals(correctAnswer)) {
 					logger.info("User answer recognized as correct.");
-					if (sum == 1000000) {
-						res = response(correctMsg+" "+congratsMsg+" "+goodbyeMsg);
+					if (sum == 100) {
+						res = responseWithFlavour(correctMsg+" "+congratsMsg+" "+goodbyeMsg,6);
 					} else {
 						recState = RecognitionState.YesNoVokabelnEasy;
 						res = askUserResponse(correctMsg/*+" "+buildString(sumMsg, String.valueOf(sum), " ")*/+" "+resume1Msg);
@@ -888,7 +937,7 @@ implements SpeechletV2
 				if (ourUserIntent.name().toLowerCase().equals(correctAnswer1)) {
 					logger.info("User answer recognized as correct.");
 					if (sum2 == 1000000) {
-						res = response(correctMsg+" "+congratsMsg+" "+goodbyeMsg);
+						res = responseWithFlavour(correctMsg+" "+congratsMsg+" "+goodbyeMsg,6);
 					} else {
 						recState = RecognitionState.YesNoVokabelnMedium;
 						res = askUserResponse(correctMsg/*+" "+buildString(sumMsg, String.valueOf(sum), " ")*/+" "+resume1Msg);
@@ -897,7 +946,7 @@ implements SpeechletV2
 				} else {
 					/*increaseQuestions1();*/
 					recState = RecognitionState.YesNoVokabelnMedium;
-					res = askUserResponse(wrongMsg/*+" "+buildString(sumMsg, String.valueOf(sum), " ")*/+" "+resume1Msg);
+					res = askUserResponse(wrongMsg+" "+resume1Msg);
 				}
 			} /*else {
 				res = askUserResponse(errorAnswerMsg);
@@ -917,7 +966,7 @@ implements SpeechletV2
 					/*increaseSum();*/
 					/*increaseQuestions11();*/
 					if (sum3 == 1000000) {
-						res = response(correctMsg+" "+congratsMsg+" "+goodbyeMsg);
+						res = responseWithFlavour(correctMsg+" "+congratsMsg+" "+goodbyeMsg,6);
 					} else {
 						recState = RecognitionState.YesNoVokabelnHard;
 						res = askUserResponse(correctMsg/*+" "+buildString(sumMsg, String.valueOf(sum), " ")*/+" "+resume1Msg);
@@ -1429,7 +1478,10 @@ implements SpeechletV2
 		String pattern16 = "\\bmedium\\b";
 		String pattern17 = "\\bhard\\b";
 		String pattern18 = "(player )?(\\bone\\b)";
-		String pattern19 = "\\bplayer\\stwo\\b";
+		/* String pattern19 = "\\bplayer\\stwo\\b"; */
+		
+		String pattern19 = "(ich nehme )?(den )?(fiftyfifty|fünfzigfünfzig) joker( bitte)?";
+		
 		String pattern20 = "\\bbye\\b";
 		String pattern21 = "\\bmenu\\b";
 		String pattern22 = "\\bmoin\\b";
@@ -1481,7 +1533,7 @@ implements SpeechletV2
 		String pattern68 = "\\binsist\\b";
 		String pattern69 = "\\brepresentative\\b";
 		String pattern70 = "\\bsmoothly\\b";
-		String pattern71 = "\\bbewillingto\\b";
+		String pattern71 = "\\bbe\\swilling\\sto\\b";
 		String pattern72 = "\\bdifficulty\\b";
 		String pattern73 = "(I would like to )?(I want to )?(train )?(improve my )?(\\bvocab\\b)(skills )?";
 		String pattern74 = "\\byess\\b";
@@ -1825,9 +1877,21 @@ implements SpeechletV2
 			String firstN=text.split(" ")[3];
 			speech.setSsml("<speak>"+firstNoun+ "<say-as interpret-as=\"spell-out\">"+firstN+"</say-as>"+"</speak>");
 			break; 
+			
 		case 4: 
 			speech.setSsml("<speak><audio src='soundbank://soundlibrary/transportation/amzn_sfx_airplane_takeoff_whoosh_01'/></speak>");
 			break;
+			
+		// in Kombination mit WelcomeMsg - Menu (GAMESHOW INTRO SOUND):
+		case 5: 
+			speech.setSsml("<speak><audio src=\"soundbank://soundlibrary/ui/gameshow/amzn_ui_sfx_gameshow_intro_01\"/><amazon:emotion name=\"excited\" intensity=\"high\">" + text + "</amazon:emotion></speak>");
+			break;
+			
+		// in Kombination mit goodbyeMsg (GAMESHOW OUTRO SOUND):
+		case 6: 
+			speech.setSsml("<speak><amazon:emotion name=\"excited\" intensity=\"medium\">" + text + "</amazon:emotion><audio src=\"soundbank://soundlibrary/ui/gameshow/amzn_ui_sfx_gameshow_outro_01\" /></speak>");
+			break;
+			
 		default: 
 			speech.setSsml("<speak><amazon:effect name=\"whispered\">" + text + "</amazon:effect></speak>");
 		} 

@@ -75,3 +75,11 @@ INFO    2020-01-08 14:38:07,284 com.amazon.customskill.AlexaSkillSpeechlet  - se
 INFO    2020-01-08 14:57:14,713 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to playerone
 INFO    2020-01-08 15:01:49,900 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to playerone
 INFO    2020-01-08 15:01:53,713 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 20:56:05,788 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 20:56:43,193 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 20:56:51,979 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to bewillingto
+INFO    2020-01-08 21:00:12,407 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 21:02:54,371 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to playertwo
+INFO    2020-01-08 21:13:13,171 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 21:13:16,952 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to Error
+INFO    2020-01-08 21:13:25,320 com.amazon.customskill.AlexaSkillSpeechlet  - set ourUserIntent to playertwo

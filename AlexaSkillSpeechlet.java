@@ -1809,7 +1809,7 @@ implements SpeechletV2
 			
 		// DEUTSCHE AUSSPRACHE
 		case 6: 
-			speech.setSsml("<speak> <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + text + "</lang> </voice> </speak>");
+			speech.setSsml("<speak> What does the german word <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice> in english mean?</speak>");
 			break;	
 			
 		// wrong feedback sound	

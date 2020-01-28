@@ -458,14 +458,7 @@ implements SpeechletV2
 		
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
-		 case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerVokabelnEasy;
-			
-			
-			break; }
+		
 			
 			
 		 case yess:{
@@ -494,9 +487,20 @@ implements SpeechletV2
 					increaseQuestions();
 					selectQuestion();
 					res = responseWithFlavour(question, 11);
-					recState = RecognitionState.AnswerVokabelnEasy; break;}
+					recState = RecognitionState.AnswerVokabelnEasy;break;}
 				}
-			}
+			} 
+			
+			
+		 } case resume: {
+			 
+						increaseQuestions();
+						selectQuestion();
+						res = responseWithFlavour3(question);
+						recState = RecognitionState.AnswerVokabelnEasy;
+							
+		 break;
+			
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {

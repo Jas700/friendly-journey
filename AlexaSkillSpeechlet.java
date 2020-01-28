@@ -86,6 +86,7 @@ implements SpeechletV2
 	private static int sum7;
 	private static int sum8;
 	private static int sum9;
+	private static int sum777;
 	private static String question = "";
 	private static String question2 = "";
 	private static String antonym = "";
@@ -169,6 +170,7 @@ implements SpeechletV2
 		sum7 = 5;
 		sum8 = 0;
 		sum9 = 0;
+		sum777 = 0;
 		recState = RecognitionState.OneTwo;
 	}
 
@@ -296,9 +298,9 @@ implements SpeechletV2
 	    
 			while(rs.next()) {
 				/*int number = rs.getInt("number");*/
-				question = rs.getString("de"); 
-				correctAnswer = rs.getString("en");
-				String Thema = rs.getString("Thema");
+				question = rs.getString("word"); 
+				correctAnswer = rs.getString("antonym");
+				// String Thema = rs.getString("Thema");
 				return question+correctAnswer;
 	       
 	    }
@@ -456,26 +458,45 @@ implements SpeechletV2
 		
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
-		case resume: {
+		 case resume: {
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy;
 			
-		/*
 			
-			res = responseWithFlavour(question,11);
-			recState = RecognitionState.AnswerVokabelnEasy;  */
-			
-			break;
+			break; }
 			
 			
-		} case yess: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerVokabelnEasy; break;
+		 case yess:{
+			if (sum777 >= 777) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerQuizLevelOne; break;
+			}
 			
+			else {
+				Random r2 = new Random();
+				int ques = r2.nextInt(2);
+				switch(ques) {
+				
+				case 1:{
+					questions = 1;
+					increaseQuestions();
+					selectQuestion();
+					res = responseWithFlavour3(question);
+					recState = RecognitionState.AnswerVokabelnEasy; break;}
+						
+				case 2:{
+					questions = 6;
+					increaseQuestions();
+					selectQuestion();
+					res = responseWithFlavour(question, 11);
+					recState = RecognitionState.AnswerVokabelnEasy; break;}
+				}
+			}
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -505,37 +526,54 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case any: {
-			questions = 1;
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour(question, 6);
-			recState = RecognitionState.AnswerVokabelnEasy; break;
+			Random r2 = new Random();
+			int ques = r2.nextInt(2);
+			switch(ques) {
+			
+			case 1:
+				questions = 1;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.AnswerVokabelnEasy; break;
+					
+			case 2:
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerVokabelnEasy; break;
+			}
+		
 		} case basics: {
 			questions = 2;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case expressions: {
 			questions = 3;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case food: {
 			questions = 4;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case animals: {
 			questions = 5;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case antonyms: {
 			questions = 6;
+			
+			setSumto777();
+			
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour(question, 11);
@@ -544,31 +582,31 @@ implements SpeechletV2
 			questions = 7;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case colours: {
 			questions = 8;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case time: {
 			questions = 9;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case adjectives: {
 			questions = 10;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case phrases: {
 			questions = 11;
 			increaseQuestions();
 			selectQuestion();
-			res = responseWithFlavour(question, 6);
+			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerVokabelnEasy; break;
 		} case menu: {
 			res = responseWithFlavour(welcomeMsg, 5);
@@ -595,20 +633,20 @@ implements SpeechletV2
 			
 		} case yess: {
 			
-			/* boolean antonyms;
-		
-			if ( antonyms = true) {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour(question, 10);
-			recState = RecognitionState.AnswerQuizLevelOne; 
-			} */
+			 
+			if (sum777 >= 777) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerQuizLevelOne; break;
+			}
 			
-			{
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelOne; break;
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.AnswerQuizLevelOne; break;
 			}
 				
 		} case quit: {
@@ -860,6 +898,7 @@ implements SpeechletV2
 			sum7 = 5;
 			sum8 = 0;
 			sum9 = 0;
+			sum777 = 0;
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
@@ -877,6 +916,7 @@ implements SpeechletV2
 			sum7 = 5;
 			sum8 = 0;
 			sum9 = 0;
+			sum777 = 0;
 			recState = RecognitionState.OneTwo; break;
 		} default: {
 			res = askUserResponse(errorAgainOrMenuMsg);
@@ -900,6 +940,7 @@ implements SpeechletV2
 			sum7 = 5;
 			sum8 = 0;
 			sum9 = 0;
+			sum777 = 0;
 			res = askUserResponse(singleMsg);
 			recState = RecognitionState.VokabelQuiz; break;
 		} case twwo: {
@@ -912,6 +953,7 @@ implements SpeechletV2
 			sum7 = 5;
 			sum8 = 0;
 			sum9 = 0;
+			sum777 = 0;
 			res = askUserResponse(multiMsg);
 			recState = RecognitionState.MultiThemes; break;
 			//selectQuestion();
@@ -1024,7 +1066,7 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*Single Playe Vokabeln allgemein oder bestimmtes Theme?*/
+	/*Single Player Vokabeln allgemein oder bestimmtes Theme?*/
 	private SpeechletResponse evaluateSingleThemes(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
@@ -1061,6 +1103,7 @@ implements SpeechletV2
 			recState = RecognitionState.AnswerQuizLevelOne; break;
 		} case antonyms: {
 			questions = 6;
+			setSumto777();
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour(question, 11);
@@ -1738,6 +1781,12 @@ implements SpeechletV2
 		}
 	}
 	
+	private void setSumto777() {
+		switch(sum777){
+		case 0: sum777 = 777; break;
+		}
+	}
+	
 	
 	void recognizeUserIntent(String userRequest) {
 		userRequest = userRequest.toLowerCase();
@@ -1932,7 +1981,7 @@ implements SpeechletV2
 		case 6: speech.setSsml("<speak> Okay, here´s another one. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice></speak>");
 		break;
 		default: 
-			speech.setSsml("<speak> Here we go. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice>in english.</speak>");break;
+			speech.setSsml("<speak> Here we go. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice>in english?</speak>");break;
 		}
 		Reprompt rep = new Reprompt();
 		rep.setOutputSpeech(speech);
@@ -2006,7 +2055,7 @@ implements SpeechletV2
 			
 		// antonym	
 		case 11: 
-			speech.setSsml("<speak> What´s the opposite of" + question + "?</speak>");
+			speech.setSsml("<speak> What´s the opposite of " + question + "?</speak>");
 			break; 
 						
 			

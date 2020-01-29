@@ -119,10 +119,10 @@ implements SpeechletV2
 	static String sumThreeMsg = "to {replacement5}.";
 	static String sumLifesTwoMsg = "Player one has {replacement3} lifes ";
 	static String sumLifesThreeMsg = "and Player two {replacement5} lifes.";
-	static String errorYesNoMsg = "Sorry, I did not unterstand that. Please say resume or quit.";
-	static String errorAgainOrMenuMsg = "Sorry I did not unterstand that. Please say menu, again or quit.";
+	static String errorYesNoMsg = "Sorry, I did not understand that. Please say resume or quit.";
+	static String errorAgainOrMenuMsg = "Sorry I did not understand that. Please say menu, again or quit.";
 	static String errorAnswerMsg = "Sorry I did not understand that. Please mention your answer again.";
-	static String errorOneTwoMsg = "Unfortunately I did not unterstand that. Please say one or two.";
+	static String errorOneTwoMsg = "Unfortunately I did not understand that. Please say one or two.";
 	static String errorVokabelQuizMsg = "Unfortunately I did not understand that. Say vocabulary or quiz.";
 	static String errorVokabelMsg = "Do you want to train your vocabulary in a certain area? If so, choose one or continue with all areas.";
 	static String errorSpielereinszweiMsg = "Which player knows the correct answer?";
@@ -461,49 +461,66 @@ implements SpeechletV2
 		
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
-		
-			
-			
-		 case yess:{
-			if (sum777 >= 1) {
-				questions = 6;
-				increaseQuestions();
-				selectQuestion();
-				res = responseWithFlavour(question, 11);
-				recState = RecognitionState.AnswerVokabelnEasy; break;
-			}
-			
-			else {
-				Random r2 = new Random();
-				int ques = r2.nextInt(2);
-				switch(ques) {
-				
-				case 1:{
-					questions = 1;
-					increaseQuestions();
-					selectQuestion();
-					res = responseWithFlavour3(question);
-					recState = RecognitionState.AnswerVokabelnEasy; break;}
-						
-				case 2:{
+		case resume: {
+			 if (sum777 >= 1) {
 					questions = 6;
 					increaseQuestions();
 					selectQuestion();
 					res = responseWithFlavour(question, 11);
-					recState = RecognitionState.AnswerVokabelnEasy;break;}
+					recState = RecognitionState.AnswerVokabelnEasy; break;
 				}
-			} 
-			
-			
-		 } case resume: {
-			 
+				
+				else {
+					Random r2 = new Random();
+					int ques = r2.nextInt(2);
+					switch(ques) {
+					
+					case 1:{
+						//questions = 1;
 						increaseQuestions();
 						selectQuestion();
 						res = responseWithFlavour3(question);
-						recState = RecognitionState.AnswerVokabelnEasy;
+						recState = RecognitionState.AnswerVokabelnEasy; break;}
 							
-		 break;
+					case 2:{
+						questions = 6;
+						increaseQuestions();
+						selectQuestion();
+						res = responseWithFlavour(question, 11);
+						recState = RecognitionState.AnswerVokabelnEasy;break;}
+					}
+				} 
 			
+		} case yess: {
+			 if (sum777 >= 1) {
+					questions = 6;
+					increaseQuestions();
+					selectQuestion();
+					res = responseWithFlavour(question, 11);
+					recState = RecognitionState.AnswerVokabelnEasy; break;
+				}
+				
+				else {
+					Random r2 = new Random();
+					int ques = r2.nextInt(2);
+					switch(ques) {
+					
+					case 1:{
+						//questions = 1;
+						increaseQuestions();
+						selectQuestion();
+						res = responseWithFlavour3(question);
+						recState = RecognitionState.AnswerVokabelnEasy; break;}
+							
+					case 2:{
+						questions = 6;
+						increaseQuestions();
+						selectQuestion();
+						res = responseWithFlavour(question, 11);
+						recState = RecognitionState.AnswerVokabelnEasy;break;}
+					}
+				} 
+			 
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -636,16 +653,14 @@ implements SpeechletV2
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
-		case resume: {
+		/*case resume: {
 			
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelOne; break;
+			recState = RecognitionState.AnswerQuizLevelOne; break;*/
 			
-		} case yess: {
-			
-			 
+		 case resume: { 
 			if (sum777 >= 1) {
 				questions = 6;
 				increaseQuestions();
@@ -681,15 +696,25 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelTwo; break;
-		} case yess: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelTwo; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerQuizLevelTwo; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.AnswerQuizLevelTwo; break;
+			}
+			
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.AnswerQuizLevelTwo; break;
 			
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
@@ -712,15 +737,25 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelThree; break;
-		} case yess: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelThree; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerQuizLevelThree; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.AnswerQuizLevelThree; break;
+			}
+			
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.AnswerQuizLevelThree; break;
 			
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
@@ -743,15 +778,25 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelThree; break;
-		} case yess: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.AnswerQuizLevelThree; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.AnswerQuizLevelThree; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.AnswerQuizLevelThree; break;
+			}
+			
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.AnswerQuizLevelThree; break;
 			
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
@@ -786,16 +831,47 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			questions = 1;
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour(question,0);
-			recState = RecognitionState.Answer; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.Answer; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.Answer; break;
+			}
+			
+			
 		} case yess: {
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.Answer; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.Answer; break;
+			}
+			//questions = 1;
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour(question,0);
+			//recState = RecognitionState.Answer; break;
+		/*} case yess: {
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
-			recState = RecognitionState.Answer; break;	
+			recState = RecognitionState.Answer; break;	*/
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -816,15 +892,46 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayer; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayer; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayer; break;
+			}
+			
 		} case yess: {
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayer; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayer; break;
+			}
+			
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.WhichPlayer; break;
+		/*} case yess: {
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayer; break;
+			recState = RecognitionState.WhichPlayer; break;*/
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -845,15 +952,46 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayerThree; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayerThree; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayerThree; break;
+			}
+			
+			
 		} case yess: {
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayerThree; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayerThree; break;
+			}
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.WhichPlayerThree; break;
+		/*} case yess: {
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayerThree; break;
+			recState = RecognitionState.WhichPlayerThree; break;*/
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -874,15 +1012,48 @@ implements SpeechletV2
 		recognizeUserIntent(userRequest);
 		switch (ourUserIntent) {
 		case resume: {
-			increaseQuestions();
-			selectQuestion();
-			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayerFour; break;
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayerFour; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayerFour; break;
+			}
+			
+			
 		} case yess: {
+			if (sum777 >= 1) {
+				questions = 6;
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour(question, 11);
+				recState = RecognitionState.WhichPlayerFour; break;
+			}
+			
+			else {
+				increaseQuestions();
+				selectQuestion();
+				res = responseWithFlavour3(question);
+				recState = RecognitionState.WhichPlayerFour; break;
+			}
+			
+			
+			//increaseQuestions();
+			//selectQuestion();
+			//res = responseWithFlavour3(question);
+			//recState = RecognitionState.WhichPlayerFour; break;
+		/*} case yess: {
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour3(question);
-			recState = RecognitionState.WhichPlayerFour; break;
+			recState = RecognitionState.WhichPlayerFour; break;*/
 		} case quit: {
 			res = responseWithFlavour2(goodbyeMsg, 0); break;
 		} case no: {
@@ -954,7 +1125,7 @@ implements SpeechletV2
 			sum8 = 0;
 			sum9 = 0;
 			sum777 = 0;
-			res = askUserResponse(singleMsg);
+			res = responseWithFlavour(singleMsg, 1);
 			recState = RecognitionState.VokabelQuiz; break;
 		} case twwo: {
 			sum = 0;
@@ -967,7 +1138,7 @@ implements SpeechletV2
 			sum8 = 0;
 			sum9 = 0;
 			sum777 = 0;
-			res = askUserResponse(multiMsg);
+			res = responseWithFlavour(multiMsg, 1);
 			recState = RecognitionState.MultiThemes; break;
 			//selectQuestion();
 			//res = responseWithFlavour(question, 10);
@@ -979,7 +1150,7 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*Multiplayer allgemein oder bestimmtes Theme?*/
+	/*Multiplayer Vokabeln allgemein oder bestimmtes Theme?*/
 	private SpeechletResponse evaluateMultiThemes(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
@@ -1016,6 +1187,7 @@ implements SpeechletV2
 			recState = RecognitionState.WhichPlayer; break;
 		} case antonyms: {
 			questions = 6;
+			antonymsselected();
 			increaseQuestions();
 			selectQuestion();
 			res = responseWithFlavour(question, 11);
@@ -1176,7 +1348,7 @@ implements SpeechletV2
 		switch (ourUserIntent) {
 		
 		
-		case yess: {
+		case resume: {
 			selectQuestion();
 			res = responseWithFlavour3(question);
 			recState = RecognitionState.AnswerQuiz; break;
@@ -2004,14 +2176,14 @@ implements SpeechletV2
 		break;
 		case 3: speech.setSsml("<speak> Give me the english term for <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice></speak>");
 		break;
-		case 4: speech.setSsml("<speak> This one´s interesting. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice>in english please.</speak>");
+		case 4: speech.setSsml("<speak> This one´s interesting. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + " </lang> </voice>in english please.</speak>");
 		break;
 		case 5: speech.setSsml("<speak> How about the term <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice></speak>");
 		break;
 		case 6: speech.setSsml("<speak> Okay, here´s another one. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice></speak>");
 		break;
 		default: 
-			speech.setSsml("<speak> Here we go. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + "</lang> </voice>in english?</speak>");break;
+			speech.setSsml("<speak> Here we go. <voice name=\"Marlene\"><lang xml:lang=\"de-DE\">" + question + " </lang> </voice>in english?</speak>");break;
 		}
 		Reprompt rep = new Reprompt();
 		rep.setOutputSpeech(speech);
@@ -2056,7 +2228,7 @@ implements SpeechletV2
 			speech.setSsml("<speak>" + text + "</speak>");
 			break; 
 		case 1: 
-			speech.setSsml("<speak><emphasis level=\"strong\">" + text + "</emphasis></speak>");
+			speech.setSsml("<speak> <amazon:emotion name=\"excited\" intensity=\"low\">" + text + "</amazon:emotion></speak>");
 			break; 
 		case 2: 
 			String half1=text.split(" ")[0];

@@ -126,9 +126,9 @@ implements SpeechletV2
 	static String errorVokabelQuizMsg = "Unfortunately I did not understand that. Say vocabulary or quiz.";
 	static String errorVokabelMsg = "Do you want to train your vocabulary in a certain area? If so, choose one or continue with all areas.";
 	static String errorSpielereinszweiMsg = "Which player knows the correct answer?";
-	static String SpielerEinsMsg = "Player one was faster. What's your answer?";
+	static String SpielerEinsMsg = "Player one?";
 	static String SpielerEinsKurzMsg = "Player one?";
-	static String SpielerZweiMsg = "Player two was faster. What's your answer?";
+	static String SpielerZweiMsg = "Player two?";
 	static String SpielerZweiKurzMsg = "Player two?";
 	static String continueLevelMsg = "Level two is up. Do you want to continue?";
 	static String continueLevelTwoMsg = "Level three is up. Do you want to continue?";
@@ -979,7 +979,7 @@ implements SpeechletV2
 		return res;
 	}
 	
-	/*Multiplayer Vokabeln allgemein oder bestimmtes Theme?*/
+	/*Multiplayer allgemein oder bestimmtes Theme?*/
 	private SpeechletResponse evaluateMultiThemes(String userRequest) {
 		SpeechletResponse res = null;
 		recognizeUserIntent(userRequest);
